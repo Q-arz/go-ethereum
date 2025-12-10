@@ -1,4 +1,4 @@
-module github.com/ethereum/go-ethereum
+module github.com/Q-arz/go-ethereum
 
 go 1.24.0
 
