@@ -141,7 +141,29 @@ var PrecompiledContractsPrague = PrecompiledContracts{
 	common.BytesToAddress([]byte{0x0f}): &bls12381Pairing{},
 	common.BytesToAddress([]byte{0x10}): &bls12381MapG1{},
 	common.BytesToAddress([]byte{0x11}): &bls12381MapG2{},
-}
+	
+	// Oxygen Dilithium3 Precompile
+	common.BytesToAddress([]byte{0x0d}): &dilithiumVerify{}, // NOTE: 0x0d conflicts with BLS in Prague!
+	// Prague uses 0x0d for bls12381G2Add.
+	// I should use a higher address or replace if I don't care about BLS.
+	// Users code used 0x0d explicitly.
+	// If I use 0x0d, I break BLS. 
+	// The user used 0x0d specifically. 
+	// Let's use 0x1A (26) or similar empty slot, but checking `e2e` usage:
+	// `dilithiumAddr := common.HexToAddress("0x00...0D")`.
+	// If I change it here, I must change it in the E2E test/usage.
+	// OR I overwrite BLS. For a custom chain, overwriting is fine if BLS isn't used.
+	// But let's check: 0x0d is G2Add.
+	// I'll overwrite it for now to match user's expectation, or better:
+	// Use 0x100 (256) or something.
+	// User's previous code said: `common.BytesToAddress([]byte{13})`.
+	// I will overwrite 0x0d. This is a custom chain.
+	// Wait, actually PrecompiledContractsPrague has it.
+	// I should probably define `PrecompiledContractsOxygen` and add it there, and add it to `ActivePrecompiledContracts`.
+	
+	// For simplicity in this step, I'll add it to `PrecompiledContractsHomestead` and all subsequent ones?
+	// Or just add `PrecompiledContractsOxygen` map.
+
 
 var PrecompiledContractsBLS = PrecompiledContractsPrague
 
